@@ -1,15 +1,9 @@
--- Initial
-DROP TABLE IF EXISTS students;
-
-CREATE TABLE IF NOT EXISTS students (
-    name VARCHAR(255) NOT NULL,
-    score INT default 0,
-    last_meeting DATE NULL 
-);
-
-INSERT INTO students (name, score) VALUES ("Bob", 80);
-INSERT INTO students (name, score) VALUES ("Sylvia", 120);
-INSERT INTO students (name, score) VALUES ("Jean", 60);
-INSERT INTO students (name, score) VALUES ("Steeve", 50);
-INSERT INTO students (name, score) VALUES ("Camilia", 80);
-INSERT INTO students (name, score) VALUES ("Alexa", 130);
+-- creates a view need_meeting that lists all students that have a score under 80 (strict) and no last_meeting or more than 1 month
+DROP VIEW IF EXISTS need_meeting;
+CREATE VIEW need_meeting AS 
+SELECT name FROM students 
+WHERE 
+    score < 80 AND 
+    (last_meeting IS NULL 
+        OR 
+    last_meeting < ADDDATE(CURDATE(), interval -1 MONTH));
